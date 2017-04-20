@@ -15,7 +15,12 @@ public class Account {
 	/**
 	 * Constructor
 	 */
-	public Account(int id, String pw, String email, String name) {}
+	public Account(int id, String pw, String email, String name) {
+		
+		ID = id;
+		
+		
+	}
 	
 	/**
 	 * Returns ID
