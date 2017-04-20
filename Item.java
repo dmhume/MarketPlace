@@ -18,8 +18,12 @@ public class Item {
 	
 	//constructor for the Item class
 	public Item(String n, int i, String d, int s, int q, double p){ //Item objects will be created by the seller class, the letters are the first letters of the variables above
-		//set all variables to the respective parameters
-		//TO-DO
+		this.name = n;
+		this.itemNumber = i;
+		this.description = d;
+		this.sellerID = s;
+		this.quantity = q;
+		this.price = p;
 	}
 	
 	
