@@ -16,7 +16,10 @@ public class Seller {
 	/**
 	 * Constructor
 	 */
-	public Seller(int id, String pw, String email, String name) {}
+	public Seller(int id, String pw, String email, String name) {
+		account = new Account(id, pw, email, name);
+		inventories = new Inventory("fileName");
+	}
 	
 	/**
 	 * Adds a given item to Inventory class object
