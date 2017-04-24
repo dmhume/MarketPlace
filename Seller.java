@@ -1,9 +1,11 @@
 
 import java.util.ArrayList;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
+
 
 public class Seller {
 	
@@ -29,8 +31,16 @@ public class Seller {
 		output.close();
 		inventories = new Inventory(filename);
 		initialID = initial;
+		// Reads file to save items in inventory ArrayList
 		inventory = new ArrayList<Item>();
 		savedFile = new File(filename);
+		Scanner file = new Scanner(savedFile);
+		while(file.hasNextLine()) {
+			String line = file.nextLine();
+			String [] itemInfo = line.split(",");
+			inventory.add(new Item(itemInfo[0], Integer.parseInt(itemInfo[1]), itemInfo[2], Integer.parseInt(itemInfo[3]), Integer.parseInt(itemInfo[4]), Double.parseDouble(itemInfo[5])));
+		}
+		file.close();
 	}
 	
 	/**
@@ -100,7 +110,23 @@ public class Seller {
 	/**
 	 * Updates all of inventory information needed and saves it as a text file
 	 */
-	public void updateFile() {}
+	public void updateFile() {
+		try {
+			PrintWriter out = new PrintWriter("sellerfile.txt");
+			for (Item item : inventory) {
+				out.print(item.getName() + ",");
+				out.print(item.getItemNumber() + ",");
+				out.print(item.getDescription() + ",");
+				out.print(item.getSellerID() + ",");
+				out.print(item.getQuantity() + ",");
+				out.println(item.getPrice() + ",");
+			}
+			out.close();
+		}
+		catch (FileNotFoundException e) {
+			System.out.println("File not found");
+		}
+	}
 	
 
 }
