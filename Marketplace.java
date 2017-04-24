@@ -8,7 +8,7 @@ public class Marketplace {
 	 * Instance fields
 	 */
 	private ArrayList<String> buyerIDs;
-	private ArrayList<String> sellerIDS;
+	private ArrayList<String> sellerIDs;
 	private ArrayList<Transaction> transactions;
 	private File savedFile;
 	
@@ -17,6 +17,9 @@ public class Marketplace {
 	 */
 	public Marketplace() {
 		// Automatically reads saved files and assigns contents to instance variables
+		buyerIDs = new ArrayList<String>();
+		sellerIDs = new ArrayList<String>();
+		transactions = new ArrayList<Transaction>();
 		
 	}
 	
