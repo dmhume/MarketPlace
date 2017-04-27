@@ -1,9 +1,12 @@
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 public class Marketplace {
 	
@@ -119,7 +122,16 @@ public class Marketplace {
 	 * @param seller class Seller object
 	 * @param buyer class Buyer object
 	 */
-	public void setTransaction(Item item, Seller seller, Buyer buyer) {}
+	public void setTransaction(Item item, Seller seller, Buyer buyer) {
+		DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+		Date dateobj = new Date();
+		String time = df.format(dateobj);	
+		int itemNumber = item.getItemNumber();
+		int sellerID = seller.getInitialID();
+		int buyerID = buyer.getAccount().getID();
+		Transaction action = new Transaction(itemNumber, sellerID, buyerID, time);
+		transactions.add(action);
+	}
 	
 	/**
 	 * Updates all of information needed and saves it as a text file

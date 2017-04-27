@@ -13,5 +13,13 @@ public class Buyer {
 		account = new Account(id, pw, email, name);
 	}
 	
+	/**
+	 * Returns buyer's account
+	 * @return Account class of this buyer
+	 */
+	public Account getAccount() {
+		return account;
+	}
+	
 
 }

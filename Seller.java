@@ -108,6 +108,14 @@ public class Seller {
 	}
 	
 	/**
+	 * Returns seller's initial ID
+	 * @return Integer value of initialID
+	 */
+	public int getInitialID() {
+		return initialID;
+	}
+	
+	/**
 	 * Updates all of inventory information needed and saves it as a text file
 	 */
 	public void updateFile() {
