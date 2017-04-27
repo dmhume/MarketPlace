@@ -56,9 +56,6 @@ public class Transaction {
 		return itemSold;
 	}
 	
-	//method to update file containing transactions
-	public void updateFile(){
-		//TO-DO
-	}
+
 	
 }

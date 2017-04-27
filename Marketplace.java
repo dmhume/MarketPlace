@@ -137,7 +137,7 @@ public class Marketplace {
 	 * Returns the list of buyer as ID
 	 * @return String of the list of buyer
 	 */
-	public String seeBuyerID() {
+	public String getBuyerID() {
 		String result = "";
 		for (String id : buyerIDs) {
 			result += id + ", ";
