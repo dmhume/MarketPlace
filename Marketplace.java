@@ -14,7 +14,7 @@ public class Marketplace {
 	 * Instance fields
 	 */
 	private ArrayList<String> buyerIDs;
-	private ArrayList<String> sellerIDs;
+	private ArrayList<Integer> sellerInitialIDs;
 	private ArrayList<Transaction> transactions;
 	private File savedFileBuyerIDs;
 	private File savedFileSellerIDs;
@@ -41,12 +41,12 @@ public class Marketplace {
 		String sellerIDFile = "sellerIDs.txt";
 		PrintWriter outputSellerID = new PrintWriter(sellerIDFile);
 		outputSellerID.close();
-		sellerIDs = new ArrayList<String>();
+		sellerInitialIDs = new ArrayList<Integer>();
 		savedFileSellerIDs = new File(sellerIDFile);
 		Scanner fileSellerIDs = new Scanner(savedFileSellerIDs);
 		while (fileSellerIDs.hasNext()) {
 			String id  = fileSellerIDs.next();
-			sellerIDs.add(id);
+			sellerInitialIDs.add(Integer.parseInt(id));
 		}
 		// Transaction
 		String transactionFile = "transactions.txt";
@@ -80,7 +80,18 @@ public class Marketplace {
 	 * Gives a unique random ID to a given seller and stores it, when the seller register
 	 * @param seller class Seller object
 	 */
-	public void setSellerID(Seller seller) {}
+	public void setSellerInitialID(Seller seller) {
+		sellerInitialIDs.add(seller.getInitialID());
+	}
+	
+	/**
+	 * Gives a unique seller initial ID, when the seller register, the number increases as the number of 
+	 * seller increases
+	 * @return Integer value of the length of sellerInitialIDs + 1
+	 */
+	public int createInitailID() {
+		return sellerInitialIDs.size() + 1;
+	}
 	
 	/**
 	 * Stores a given buyer id in ArrayList.
@@ -137,12 +148,32 @@ public class Marketplace {
 	 * Returns the list of buyer as ID
 	 * @return String of the list of buyer
 	 */
-	public String getBuyerID() {
+	public String getListOfBuyerID() {
 		String result = "";
 		for (String id : buyerIDs) {
 			result += id + ", ";
 		}
 		return result.substring(0, result.length()-1);
+	}
+	
+	/**
+	 * Returns the list of seller as ID
+	 * @return String of the list of seller
+	 */
+	public String getListOfSellerID() {
+		String result = "";
+		for (int id : sellerInitialIDs) {
+			result += Integer.toString(id) + ", ";
+		}
+		return result.substring(0,  result.length()-1);
+	}
+	
+	public String reportInventoryOfSeller(Seller seller) {
+		String result = "";
+		for (Item item : seller.getInventory()) {
+			result += "Item name: " + item.getName() + ", Quantity: " + item.getQuantity() + "\n";
+		}
+		return result;
 	}
 	
 	/**

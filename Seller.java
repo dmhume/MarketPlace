@@ -108,6 +108,14 @@ public class Seller {
 	}
 	
 	/**
+	 * Returns the inventory of this seller
+	 * @return ArrayList of inventory
+	 */
+	public ArrayList<Item> getInventory() {
+		return inventory;
+	}
+	
+	/**
 	 * Returns seller's initial ID
 	 * @return Integer value of initialID
 	 */
