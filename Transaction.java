@@ -16,11 +16,17 @@ public class Transaction {
 	private int buyerID;
 	private int sellerID;
 	private int itemSold;
+	private String transactionTime;
 	private File transactions;
 	
 	
 	// Default Constructor
-	public Transaction(File f) { }
+	public Transaction(int itemNumber, int sellerid, int buyerid, String time) {
+		buyerID = buyerid;
+		sellerID = sellerid;
+		itemSold = itemNumber;
+		transactionTime = time;
+	}
 	
 	
 	// Setter Methods
