@@ -80,7 +80,7 @@ public class Account {
 		for(Item item : history) {
 			result += item.getName() + ", ";
 		}
-		return result;
+		return result.substring(0,  result.length()-1);
 	}
 	
 	/**

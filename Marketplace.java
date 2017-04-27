@@ -176,6 +176,11 @@ public class Marketplace {
 		return result;
 	}
 	
+	public String reportBuyerPurchsedHistory(Buyer buyer) {
+		String result = "Purchased Items of "+ buyer.getAccount().getID() + ": " + buyer.getAccount().getHistory();
+		return result;
+	}
+	
 	/**
 	 * Updates all of information needed and saves it as a text file
 	 */
