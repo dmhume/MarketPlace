@@ -134,8 +134,27 @@ public class Marketplace {
 	}
 	
 	/**
+	 * Returns the list of buyer as ID
+	 * @return String of the list of buyer
+	 */
+	public String seeBuyerID() {
+		String result = "";
+		for (String id : buyerIDs) {
+			result += id + ", ";
+		}
+		return result.substring(0, result.length()-1);
+	}
+	
+	/**
 	 * Updates all of information needed and saves it as a text file
 	 */
 	public void updateFile() {} 
+	
+	/**
+	 * main
+	 */
+	public static void main(String[] args) throws FileNotFoundException {
+		Marketplace test = new Marketplace();
+	}
 
 }
