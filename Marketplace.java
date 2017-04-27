@@ -1,6 +1,9 @@
 
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 
 public class Marketplace {
 	
@@ -10,16 +13,49 @@ public class Marketplace {
 	private ArrayList<String> buyerIDs;
 	private ArrayList<String> sellerIDs;
 	private ArrayList<Transaction> transactions;
-	private File savedFile;
+	private File savedFileBuyerIDs;
+	private File savedFileSellerIDs;
+	private File savedFileTransactions;
 	
 	/**
 	 * Constructor
+	 * @throws FileNotFoundException 
 	 */
-	public Marketplace() {
+	public Marketplace() throws FileNotFoundException {
 		// Automatically reads saved files and assigns contents to instance variables
+		// buyerIDs
+		String buyerIDFile = "buyerIDs.txt";
+		PrintWriter outputBuyerID = new PrintWriter(buyerIDFile);
+		outputBuyerID.close();
 		buyerIDs = new ArrayList<String>();
+		savedFileBuyerIDs = new File(buyerIDFile);
+		Scanner fileBuyerIDs = new Scanner(savedFileBuyerIDs);
+		while (fileBuyerIDs.hasNext()) {
+			String id = fileBuyerIDs.next();
+			buyerIDs.add(id);
+		}
+		// SellerIDs
+		String sellerIDFile = "sellerIDs.txt";
+		PrintWriter outputSellerID = new PrintWriter(sellerIDFile);
+		outputSellerID.close();
 		sellerIDs = new ArrayList<String>();
+		savedFileSellerIDs = new File(sellerIDFile);
+		Scanner fileSellerIDs = new Scanner(savedFileSellerIDs);
+		while (fileSellerIDs.hasNext()) {
+			String id  = fileSellerIDs.next();
+			sellerIDs.add(id);
+		}
+		// Transaction
+		String transactionFile = "transactions.txt";
+		PrintWriter outputTransaction = new PrintWriter(transactionFile);
+		outputTransaction.close();
 		transactions = new ArrayList<Transaction>();
+		savedFileTransactions = new File(transactionFile);
+		Scanner fileTransactions = new Scanner(savedFileTransactions);
+		while (fileTransactions.hasNextLine()) {
+			String line = fileTransactions.nextLine();
+			// Needs to save transaction history in ArrayList transactions
+		}
 		
 	}
 	
