@@ -391,6 +391,28 @@ public class Marketplace {
 	}
 	
 	/**
+	 * Creates new Item object and returns Item object
+	 * @param seller Seller object 
+	 * @return Itme class object
+	 */
+	public Item createItem(Seller seller) {
+		Scanner name = new Scanner(System.in);
+		System.out.print("Item Name: ");
+		String ItemName = name.nextLine();
+		Scanner desc = new Scanner(System.in);
+		System.out.print("Item Description: ");
+		String ItemDesc = desc.nextLine();
+		int sellerInitialID = seller.getInitialID();
+		Scanner quant = new Scanner(System.in);
+		System.out.print("Quantity: ");
+		int ItemQuantity = quant.nextInt();
+		Scanner price = new Scanner(System.in);
+		System.out.print("Item price: ");
+		Double ItemPrice = price.nextDouble();
+		return new Item(ItemName, ItemDesc, sellerInitialID, ItemQuantity, ItemPrice);
+	}
+	
+	/**
 	 * Updates all of information needed and saves it as a text file
 	 */
 	public void updateFile() {} 
