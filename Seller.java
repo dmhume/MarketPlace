@@ -143,7 +143,7 @@ public class Seller {
 				out.print(item.getDescription() + ",");
 				out.print(item.getSellerID() + ",");
 				out.print(item.getQuantity() + ",");
-				out.println(item.getPrice() + ",");
+				out.println(item.getPrice());
 			}
 			out.close();
 		}
