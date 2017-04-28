@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -22,12 +23,17 @@ public class Marketplace {
 	private File savedFileBuyerIDs;
 	private File savedFileSellerIDs;
 	private File savedFileTransactions;
+	private File savedFileSellers;
+	private File savedFileBuyers;
+	private File savedFileShippingStatus;
+	
 	
 	/**
 	 * Constructor
-	 * @throws FileNotFoundException 
+	 * @throws IOException 
+	 * @throws ClassNotFoundException 
 	 */
-	public Marketplace() throws FileNotFoundException {
+	public Marketplace() throws ClassNotFoundException, IOException {
 		// Automatically reads saved files and assigns contents to instance variables
 		// buyerIDs
 		String buyerIDFile = "buyerIDs.txt";
@@ -74,12 +80,55 @@ public class Marketplace {
 		}
 		fileTransactions.close();
 		//sellers
+		String sellerFile = "sellers.txt";
+		PrintWriter outputSellers = new PrintWriter(sellerFile);
+		outputSellers.close();
 		sellers = new ArrayList<Seller>();
+		savedFileSellers = new File(sellerFile);
+		Scanner fileSellers = new Scanner(savedFileSellers);
+		while (fileSellers.hasNextLine()) {
+			String line = fileSellers.nextLine();
+			String[] contents = line.split(",");
+			int initialID = Integer.parseInt(contents[0]);
+			String id = contents[1];
+			String pw = contents[2];
+			String email = contents[3];
+			String name = contents[4];
+			Seller seller = new Seller(initialID, id, pw, email, name);
+			sellers.add(seller);
+		}
+		fileSellers.close();
 		// buyers
+		String buyerFile = "buyers.txt";
+		PrintWriter outputBuyers = new PrintWriter(buyerFile);
+		outputBuyers.close();
 		buyers = new ArrayList<Buyer>();
+		savedFileBuyers = new File(buyerFile);
+		Scanner fileBuyers = new Scanner(savedFileBuyers);
+		while (fileBuyers.hasNextLine()) {
+			String line = fileBuyers.nextLine();
+			String [] contents = line.split(",");
+			String id = contents[0];
+			String pw = contents[1];
+			String email = contents[2];
+			String name = contents[3];
+			Buyer buyer = new Buyer(id, pw, email, name);
+			buyers.add(buyer);
+		}
+		fileBuyers.close();
 		// shipping status
+		String shippingStatusFile = "shippingStatus.txt";
+		PrintWriter outputShipping = new PrintWriter(shippingStatusFile);
+		outputShipping.close();
 		shippingStatus = new ArrayList<String[]>();
-		
+		savedFileShippingStatus = new File(shippingStatusFile);
+		Scanner fileShipping = new Scanner(savedFileShippingStatus);
+		while (fileShipping.hasNextLine()) {
+			String line = fileShipping.nextLine();
+			String[] contents = line.split(",");
+			shippingStatus.add(contents);
+		}
+		fileShipping.close();
 	}
 	
 	/**
@@ -419,8 +468,10 @@ public class Marketplace {
 	
 	/**
 	 * main
+	 * @throws IOException 
+	 * @throws ClassNotFoundException 
 	 */
-	public static void main(String[] args) throws FileNotFoundException {
+	public static void main(String[] args) throws ClassNotFoundException, IOException {
 		Marketplace test = new Marketplace();
 	}
 
