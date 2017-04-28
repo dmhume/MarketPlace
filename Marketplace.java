@@ -127,11 +127,124 @@ public class Marketplace {
 	}
 	
 	/**
-	 * Returns the transaction history for a given object such as a seller, a buyer or a item
-	 * @param buyerOrSeller Seller object, Buyer object, or Item object
+	 * Returns the transaction history for a given period option
+	 * @param history option: 1. All, 2. day, 3. last week, 4. month 
 	 * @return String transaction history
 	 */
-	public String getTransaction(Object buyerOrSellerOrItem) {}
+	public String getTransaction(int option) {
+		String result = "";
+		// All history
+		if (option == 1) {
+			for (Transaction salesHistory : transactions) {
+				String time = salesHistory.getTime();
+				String itemNumber = Integer.toString(salesHistory.getItem());
+				String sellerInitialID = Integer.toString(salesHistory.getSeller());
+				String buyerID = salesHistory.getBuyer();
+				result += "Date: " + time + ", Item Number: " + itemNumber + ", Seller Initial ID: " + sellerInitialID + ", Buyer ID: " + buyerID + "\n";
+			}
+		}//if
+		// Specific Day
+		else if (option == 2) {
+			Scanner userInput = new Scanner(System.in);
+			System.out.print("Please enter day as MM/DD: ");
+			String userInputDay = userInput.nextLine();
+			for (Transaction salesHistory : transactions) {
+				String time = salesHistory.getTime();
+				if (time.substring(0, 5).equals(userInputDay)) {
+					String itemNumber = Integer.toString(salesHistory.getItem());
+					String sellerInitialID = Integer.toString(salesHistory.getSeller());
+					String buyerID = salesHistory.getBuyer();
+					result += "Date: " + time + ", Item Number: " + itemNumber + ", Seller Initial ID: " + sellerInitialID + ", Buyer ID: " + buyerID + "\n";					
+				}
+			}
+		}//else if: specific day
+		// Within Last week
+		else if (option == 3) {
+			DateFormat dfMonth = new SimpleDateFormat("MM");
+			DateFormat dfDay = new SimpleDateFormat("dd");
+			Date dateobj = new Date();
+			int month = Integer.parseInt(dfMonth.format(dateobj));
+			int day = Integer.parseInt(dfDay.format(dateobj));
+			// if today is less than 8th
+			if (day < 8) {
+				for (Transaction salesHistory : transactions) {
+					String time = salesHistory.getTime();
+					int monthTransaction = Integer.parseInt(time.substring(0,2));
+					int dayTransaction = Integer.parseInt(time.substring(3, 5));
+					// Last month
+					if (monthTransaction == month - 1) {
+						// 31 day per month: 1, 3, 5, 7, 8, 10, 12
+						if (monthTransaction == 1 || monthTransaction == 3 || monthTransaction == 5 || monthTransaction == 7 || monthTransaction == 8 || monthTransaction == 10 || monthTransaction ==12) {
+							if (dayTransaction <= 31 && dayTransaction > 31 - (7 - day)) {
+								String itemNumber = Integer.toString(salesHistory.getItem());
+								String sellerInitialID = Integer.toString(salesHistory.getSeller());
+								String buyerID = salesHistory.getBuyer();		
+								result += "Date: " + time + ", Item Number: " + itemNumber + ", Seller Initial ID: " + sellerInitialID + ", Buyer ID: " + buyerID + "\n";
+							}
+						}
+						// 30 day per month: 4, 6, 9, 11
+						else if (monthTransaction == 4 || monthTransaction == 6 || monthTransaction == 9 || monthTransaction == 11) {
+							if (dayTransaction <= 30 && dayTransaction > 30 - (7 - day)) {
+								String itemNumber = Integer.toString(salesHistory.getItem());
+								String sellerInitialID = Integer.toString(salesHistory.getSeller());
+								String buyerID = salesHistory.getBuyer();		
+								result += "Date: " + time + ", Item Number: " + itemNumber + ", Seller Initial ID: " + sellerInitialID + ", Buyer ID: " + buyerID + "\n";								
+							}
+						}
+						// Feb.
+						else {
+							if (dayTransaction <= 28 && dayTransaction > 28 - ( 7- day)) {
+								String itemNumber = Integer.toString(salesHistory.getItem());
+								String sellerInitialID = Integer.toString(salesHistory.getSeller());
+								String buyerID = salesHistory.getBuyer();		
+								result += "Date: " + time + ", Item Number: " + itemNumber + ", Seller Initial ID: " + sellerInitialID + ", Buyer ID: " + buyerID + "\n";													
+							}
+						}
+					}//if - last month
+					// Same month
+					else if (monthTransaction == month) {
+						if (dayTransaction >= 1 && dayTransaction < 7 - day) {
+							String itemNumber = Integer.toString(salesHistory.getItem());
+							String sellerInitialID = Integer.toString(salesHistory.getSeller());
+							String buyerID = salesHistory.getBuyer();		
+							result += "Date: " + time + ", Item Number: " + itemNumber + ", Seller Initial ID: " + sellerInitialID + ", Buyer ID: " + buyerID + "\n";																			
+						}
+					}//else if - same month
+					}//for loop
+			}//if: less than 8th
+			// if day is greater than or equal to 8th 
+			else {
+				for (Transaction salesHistory : transactions) {
+					String time = salesHistory.getTime();
+					int dayTransaction = Integer.parseInt(time.substring(3, 5));
+					if (dayTransaction > day - 7 && dayTransaction < day) {
+						String itemNumber = Integer.toString(salesHistory.getItem());
+						String sellerInitialID = Integer.toString(salesHistory.getSeller());
+						String buyerID = salesHistory.getBuyer();
+						result += "Date: " + time + ", Item Number: " + itemNumber + ", Seller Initial ID: " + sellerInitialID + ", Buyer ID: " + buyerID + "\n";
+					}
+				}
+			}// else: day is greater than or equal to 8th
+		}// else if: Last week
+		// Month
+		else if (option == 4) {
+			DateFormat dfMonth = new SimpleDateFormat("MM");
+			Date dateobj = new Date();
+			int month = Integer.parseInt(dfMonth.format(dateobj));
+			for (Transaction salesHistory : transactions) {
+				String time = salesHistory.getTime();
+				int monthTransaction = Integer.parseInt(time.substring(0, 2));
+				if (monthTransaction == month) {
+					String itemNumber = Integer.toString(salesHistory.getItem());
+					String sellerInitialID = Integer.toString(salesHistory.getSeller());
+					String buyerID = salesHistory.getBuyer();
+					result += "Date: " + time + ", Item Number: " + itemNumber + ", Seller Initial ID: " + sellerInitialID + ", Buyer ID: " + buyerID + "\n";
+				}
+			}
+		}//else if: Month
+		
+		return result;
+	}
 	
 	/**
 	 * Saved the transaction history to the ArrayList in instance fields with item, seller, and buyer
@@ -144,9 +257,9 @@ public class Marketplace {
 		Date dateobj = new Date();
 		String time = df.format(dateobj);	
 		int itemNumber = item.getItemNumber();
-		int sellerID = seller.getInitialID();
+		int sellerInitialID = seller.getInitialID();
 		String buyerID = buyer.getAccount().getID();
-		Transaction action = new Transaction(itemNumber, sellerID, buyerID, time);
+		Transaction action = new Transaction(itemNumber, sellerInitialID, buyerID, time);
 		transactions.add(action);
 	}
 	
@@ -169,7 +282,7 @@ public class Marketplace {
 	public String getListOfSellerID() {
 		String result = "";
 		for (String[] id : sellerIDs) {
-			result += "Seller Initial ID: " + id[0] + ", Seller ID: " + id[1];
+			result += "Seller Initial ID: " + id[0] + ", Seller ID: " + id[1] + "\n";
 		}
 		return result;
 	}
@@ -193,7 +306,7 @@ public class Marketplace {
 	 * @return String of purchased items of a given buyer
 	 */
 	public String reportBuyerPurchsedHistory(Buyer buyer) {
-		String result = "Purchased Items of "+ buyer.getAccount().getID() + ": " + buyer.getAccount().getHistory();
+		String result = "Purchased Items of "+ buyer.getAccount().getID() + ": " + buyer.getAccount().getHistory() + "\n";
 		return result;
 	}
 	
