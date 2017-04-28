@@ -37,6 +37,7 @@ public class Marketplace {
 			String id = fileBuyerIDs.next();
 			buyerIDs.add(id);
 		}
+		fileBuyerIDs.close();
 		// SellerIDs
 		String sellerIDFile = "sellerIDs.txt";
 		PrintWriter outputSellerID = new PrintWriter(sellerIDFile);
@@ -49,6 +50,7 @@ public class Marketplace {
 			String[] ids = idLine.split(",");
 			sellerIDs.add(ids);
 		}
+		fileSellerIDs.close();
 		// Transaction
 		String transactionFile = "transactions.txt";
 		PrintWriter outputTransaction = new PrintWriter(transactionFile);
@@ -58,8 +60,16 @@ public class Marketplace {
 		Scanner fileTransactions = new Scanner(savedFileTransactions);
 		while (fileTransactions.hasNextLine()) {
 			String line = fileTransactions.nextLine();
+			String[] contents = line.split(",");
+			int itemNum = Integer.parseInt(contents[0]);
+			int sellerInitialID = Integer.parseInt(contents[1]);
+			String buyerID = contents[2];
+			String time = contents[3];
+			Transaction transaction = new Transaction(itemNum, sellerInitialID, buyerID, time);
+			transactions.add(transaction);
 			// Needs to save transaction history in ArrayList transactions
 		}
+		fileTransactions.close();
 		
 	}
 	
