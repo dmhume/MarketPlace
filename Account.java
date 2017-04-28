@@ -48,6 +48,14 @@ public class Account {
 	}
 	
 	/**
+	 * Returns email address
+	 * @return String email address
+	 */
+	public String getEmail() {
+		return emailAddress;
+	}
+	
+	/**
 	 * Replaces ID with given new ID
 	 * @param id Integer new ID
 	 */
@@ -69,6 +77,14 @@ public class Account {
 	 */
 	public void setPassword(String newPass) {
 		password = newPass;
+	}
+	
+	/**
+	 * Replaces email with given new email
+	 * @param email String new email
+	 */
+	public void setEmail(String email) {
+		emailAddress = email;
 	}
 	
 	/**
