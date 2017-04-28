@@ -8,7 +8,6 @@
  */
 
 
-import java.io.File;
 
 public class Transaction {
 
@@ -17,7 +16,6 @@ public class Transaction {
 	private int sellerInitialID;
 	private int itemSold;
 	private String transactionTime;
-	private File transactions;
 	
 	
 	// Default Constructor
@@ -56,6 +54,9 @@ public class Transaction {
 		return itemSold;
 	}
 	
+	public String getTime() {
+		return transactionTime;
+	}
 
 	
 }
