@@ -1,4 +1,5 @@
 import java.io.BufferedWriter;
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -9,6 +10,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 //LAST UPDATED: 4/13/2017 8:17p.m.
@@ -30,8 +32,9 @@ public class Item implements Serializable{
 	
 	
 	//constructor for the Item class
-	public Item(String n, String d, int s, int q, double p){ //Item objects will be created by the seller class, the letters are the first letters of the variables above
+	public Item(String n, String d, int s, int q, double p) throws FileNotFoundException, ClassNotFoundException, IOException{ //Item objects will be created by the seller class, the letters are the first letters of the variables above
 		this.name = n;
+		setItemNumber();
 		this.description = d;
 		this.sellerID = s;
 		this.quantity = q;
@@ -54,10 +57,27 @@ public class Item implements Serializable{
 		return itemNumber;
 	}
 	
-	//method to set an id to item
-	public void setItemNumber() throws ClassNotFoundException, IOException{
-		Inventory inv = new Inventory();
-		itemNumber = inv.getTotalInventory().size() + 1;
+	//method to automatically give item a number
+	public void setItemNumber() throws FileNotFoundException, IOException, ClassNotFoundException{
+		ArrayList<Item> items = new ArrayList<Item>();
+		File itemsFile = new File("totalInventory.txt");
+		ObjectInputStream in = new ObjectInputStream(new FileInputStream("totalInventory.txt"));	
+		
+		try{
+			Item item = null;
+			while((item = (Item) in.readObject()) != null){
+				items.add(item);
+			}
+			in.close();
+		}
+		catch(EOFException e){
+			in.close();
+		}
+		if(items.size() == 0)
+			itemNumber = 0;
+		else{
+			itemNumber = items.size() + 1;
+		}
 	}
 	
 	//method to return the description of the item
@@ -100,14 +120,18 @@ public class Item implements Serializable{
 		Item testItem = new Item("Basketball", "Standard basketball", 11234, 4, 23.24);
 		Item test2 = new Item("Football", "Standard football", 1123, 3, 2.23);
 		Item test3 = new Item("Car", "Blue car", 1, 3, 4000);
+		Item test4 = new Item("dog", "good doge", 1, 2, 33322112);
 		System.out.println(testItem.getName());
 		ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("totalInventory.txt"));
 		out.writeObject(testItem);
 		out.writeObject(test2);
 		out.writeObject(test3);
+		out.writeObject(test4);
+		out.close();
 		
 		ObjectInputStream in = new ObjectInputStream(new FileInputStream("totalInventory.txt"));
 		Item test = (Item) in.readObject();
 		System.out.println(test2.getName());
+		System.out.println(test4.getItemNumber());
 	}
 }
