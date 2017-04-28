@@ -42,7 +42,7 @@ public class Seller {
 	 * @param info String value of information
 	 */
 	public void changeItemInfo(int num, String itemName, String info) {
-		// 1: name/ 2: itemNumber/ 3: description/ 4: quantity/ 5: price
+		// 1: name/ 2: description/ 3: quantity/ 4: price
 		for (Item item : inventory) {
 			if (itemName.equals(item.getName())) {
 				//name
@@ -50,16 +50,13 @@ public class Seller {
 					item.setName(info);
 				}
 				else if (num == 2) {
-					item.setItemNumber(Integer.parseInt(info));
-				}
-				else if (num == 3) {
 					item.setDescription(info);
 				}
-				else if (num == 4) {
+				else if (num == 3) {
 					item.setQuantity(Integer.parseInt(info));
 				}
-				else if (num == 5) {
-					item.SetPrice(Double.parseDouble(info));
+				else if (num == 4) {
+					item.setPrice(Double.parseDouble(info));
 				}
 			}//if
 		}//for
