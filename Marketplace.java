@@ -575,7 +575,13 @@ public class Marketplace {
 		//ArrayList<String[]> shippingStatus;
 		try {
 			PrintWriter outShipping = new PrintWriter("shippingStatus.txt");
-			
+			for (String[] status : shippingStatus) {
+				String itemName = status[0];
+				String itemNum = status[1];
+				String shipped = status[2];
+				outShipping.println(itemName + "," + itemNum + "," + shipped);
+			}
+			outShipping.close();
 		}
 		catch(FileNotFoundException e) {
 			System.out.println("File not found");
