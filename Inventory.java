@@ -8,22 +8,43 @@
  */
 
 import java.io.BufferedReader;
+import java.io.EOFException;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Scanner;
 
-public class Inventory {
+public class Inventory implements Serializable {
 
 	private ArrayList<Item> totalInventory = new ArrayList<Item>(); //the ArrayList to contain all inventory items
-	private File totalInventoryFile;
+	private static File totalInventoryFile;
 	
 	//Inventory constructor, will take in the file name that contains the inventory as the parameter
-	public Inventory(String fileName) throws IOException, ClassNotFoundException{
-		ObjectOutputStream oos = null;
+	public Inventory() throws IOException, ClassNotFoundException{
+		totalInventoryFile = new File("totalInventory.txt");
+		ObjectInputStream in = new ObjectInputStream(new FileInputStream("totalInventory.txt"));	
 		
+		try{
+			Item item = null;
+			while((item = (Item) in.readObject()) != null){
+				totalInventory.add(item);
+				System.out.println("added item");
+			}
+			in.close();
+		}
+		catch(EOFException e){
+			in.close();
+		}
+		/*Scanner scan = new Scanner(totalInventoryFile);
+		Item item = (Item) in.readObject();
+		totalInventory.add(item);*/
+
 	}
 	
 	//This method will add the items from the sellers inventories that haven't already been added
@@ -49,7 +70,7 @@ public class Inventory {
 		ObjectOutputStream oos = null;
 		
 		try{
-			fout = new FileOutputStream("FILE NAME/LOCATION");
+			fout = new FileOutputStream("inventory.txt");
 			oos = new ObjectOutputStream(fout);
 			oos.writeObject(totalInventory);
 			System.out.println("Completed");
@@ -75,5 +96,13 @@ public class Inventory {
 				}
 			}
 		}
+	}
+	
+	//test method
+	public static void main (String[] args) throws ClassNotFoundException, IOException{
+		Inventory inv = new Inventory();
+		ArrayList<Item> a = inv.getTotalInventory();
+		System.out.println(totalInventoryFile);
+		System.out.println(a.get(2).getName());
 	}
 }
