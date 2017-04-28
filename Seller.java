@@ -124,6 +124,14 @@ public class Seller {
 	}
 	
 	/**
+	 * Returns seller's account
+	 * @return Account class seller's account
+	 */
+	public Account getAccount() {
+		return account;
+	}
+	
+	/**
 	 * Updates all of inventory information needed and saves it as a text file
 	 */
 	public void updateFile() {
