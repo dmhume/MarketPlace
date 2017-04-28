@@ -94,7 +94,25 @@ public class Marketplace {
 			String pw = contents[2];
 			String email = contents[3];
 			String name = contents[4];
+			String itemList = contents[5];
+			String[] listOfItem = itemList.split("_");
 			Seller seller = new Seller(initialID, id, pw, email, name);
+			for (String list : listOfItem) {
+				String[] itemInfo = list.split("/");
+				String itemName = itemInfo[0];
+				int itemNum = Integer.parseInt(itemInfo[1]);
+				String desc = itemInfo[2];
+				int sellerInitialID = Integer.parseInt(itemInfo[3]);
+				int quantity = Integer.parseInt(itemInfo[4]);
+				Double price = Double.parseDouble(itemInfo[5]);
+				Item item = new Item(itemName, desc, sellerInitialID, quantity, price);
+				
+				
+				seller.addToInventory(item);
+				
+				
+				
+			}
 			sellers.add(seller);
 		}
 		fileSellers.close();
@@ -549,7 +567,8 @@ public class Marketplace {
 				String pw = seller.getAccount().getPassword();
 				String email = seller.getAccount().getEmail();
 				String name = seller.getAccount().getName();
-				outSellers.println(initialID + "," + id + "," + pw + "," + email +"," + name);
+				String itemList = seller.inventoryToString();
+				outSellers.println(initialID + "," + id + "," + pw + "," + email +"," + name + "," + itemList);
 			}
 			outSellers.close();
 		}
