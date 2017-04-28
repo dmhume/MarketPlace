@@ -86,8 +86,17 @@ public class Marketplace {
 	 * Buyer object purchases item, which makes Seller object sends item to Buyer object 
 	 * and the item is removed from inventory
 	 * @param item Item class object
+	 * @param buyer Buyer class Object
 	 */
-	public void purchasedItem(Item item) {}
+	public void purchasedItem(Item item, Buyer buyer){
+		int sellerInitialID = item.getSellerID();
+		Seller seller = this.getSeller(sellerInitialID);
+		System.out.println(seller.notifyBuyer(item) + " to " + buyer.getAccount().getID());
+		this.setTransaction(item, seller, buyer);
+		String[] shippingResult = {item.getName(), Integer.toString(item.getItemNumber()), "shipped"};
+		shippingStatus.add(shippingResult);
+		seller.removeItem(item);
+	}
 	
 	/**
 	 * Saves a given seller into ArrayList of seller
@@ -168,7 +177,16 @@ public class Marketplace {
 	 * @param item class Item object
 	 * @return String message 
 	 */
-	public String notifySeller(Item item) {}
+	public String notifySeller(Item item) {
+		String result = "";
+		if (item.getQuantity() == 0) {
+			result += "Seller Initial ID: " + item.getSellerID() + ", " + item.getName() + "(" + item.getItemNumber() + ")" + " is out of stock!";
+		}
+		else {
+			result += "Available";
+		}
+		return result;
+	}
 	
 	/**
 	 * Returns the buyer ID which matches with a given buyer
