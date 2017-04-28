@@ -10,7 +10,7 @@ public class Account {
 	private String password;
 	private String emailAddress;
 	private String name;
-	private ArrayList<Item> history; // Needs to be saved
+	private ArrayList<String> history; // Needs to be saved
 	
 	/**
 	 * Constructor
@@ -20,7 +20,7 @@ public class Account {
 		password = pw;
 		emailAddress = email;
 		name = nm;
-		history = new ArrayList<Item>();
+		history = new ArrayList<String>();
 	}
 	
 	/**
@@ -93,8 +93,8 @@ public class Account {
 	 */
 	public String getHistory() {
 		String result = "";
-		for(Item item : history) {
-			result += item.getName() + "/";
+		for(String item : history) {
+			result += item + "/";
 		}
 		return result.substring(0,  result.length()-1);
 	}
@@ -103,8 +103,8 @@ public class Account {
 	 * Adds purchased item to history ArrayList
 	 * @param purchasedItem Item object
 	 */
-	public void addHistory(Item purchasedItem) {
-		history.add(purchasedItem);
+	public void addHistory(String itemName) {
+		history.add(itemName);
 	}
 	
 	/**
