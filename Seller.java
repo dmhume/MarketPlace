@@ -13,10 +13,8 @@ public class Seller {
 	 * Instance fields
 	 */
 	private Account account;
-	private Inventory inventories;
 	private int initialID; // Marketplace system will issue
 	private ArrayList<Item> inventory; // Needs to be saved
-	private File savedFile;
 	
 	/**
 	 * Constructor
@@ -25,30 +23,9 @@ public class Seller {
 	 */
 	public Seller(int initial, String id, String pw, String email, String name) throws ClassNotFoundException, IOException {
 		account = new Account(id, pw, email, name);
-		// Creates the text file that contains inventory items
-		String filename = "sellerfile.txt";
-		PrintWriter output = new PrintWriter(filename);
-		output.close();
-		inventories = new Inventory(filename);
 		initialID = initial;
-		// Reads file to save items in inventory ArrayList
 		inventory = new ArrayList<Item>();
-		savedFile = new File(filename);
-		Scanner file = new Scanner(savedFile);
-		while(file.hasNextLine()) {
-			String line = file.nextLine();
-			String [] itemInfo = line.split(",");
-			inventory.add(new Item(itemInfo[0], Integer.parseInt(itemInfo[1]), itemInfo[2], Integer.parseInt(itemInfo[3]), Integer.parseInt(itemInfo[4]), Double.parseDouble(itemInfo[5])));
-		}
-		file.close();
-	}
-	
-	/**
-	 * Adds a given item to Inventory class object
-	 * @param item Item class object
-	 */
-	public void addItem(Item item) {
-		inventories.addItem(item);
+
 	}
 	
 	/**
@@ -56,7 +33,6 @@ public class Seller {
 	 * @param item Item class object
 	 */
 	public void removeItem(Item item) {
-		inventories.deleteItem(item);
 		inventory.remove(item);
 	}
 	
@@ -134,23 +110,12 @@ public class Seller {
 	/**
 	 * Updates all of inventory information needed and saves it as a text file
 	 */
-	public void updateFile() {
-		try {
-			PrintWriter out = new PrintWriter("sellerfile.txt");
-			for (Item item : inventory) {
-				out.print(item.getName() + ",");
-				out.print(item.getItemNumber() + ",");
-				out.print(item.getDescription() + ",");
-				out.print(item.getSellerID() + ",");
-				out.print(item.getQuantity() + ",");
-				out.println(item.getPrice());
-			}
-			out.close();
+	public String inventoryToString() {
+		String result = "";
+		for (Item item : inventory) {
+			result += item.getName() + "/" + item.getItemNumber() + "/" + item.getDescription() + "/" + item.getSellerID() + "/" + item.getQuantity() + "/" + item.getPrice() + "_";
 		}
-		catch (FileNotFoundException e) {
-			System.out.println("File not found");
-		}
+        return result;
 	}
-	
 
 }
