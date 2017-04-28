@@ -16,6 +16,9 @@ public class Marketplace {
 	private ArrayList<String> buyerIDs;
 	private ArrayList<String[]> sellerIDs;
 	private ArrayList<Transaction> transactions;
+	private ArrayList<Seller> sellers;
+	private ArrayList<Buyer> buyers;
+	private ArrayList<String[]> shippingStatus;
 	private File savedFileBuyerIDs;
 	private File savedFileSellerIDs;
 	private File savedFileTransactions;
@@ -70,6 +73,12 @@ public class Marketplace {
 			// Needs to save transaction history in ArrayList transactions
 		}
 		fileTransactions.close();
+		//sellers
+		sellers = new ArrayList<Seller>();
+		// buyers
+		buyers = new ArrayList<Buyer>();
+		// shipping status
+		shippingStatus = new ArrayList<String[]>();
 		
 	}
 	
@@ -79,6 +88,54 @@ public class Marketplace {
 	 * @param item Item class object
 	 */
 	public void purchasedItem(Item item) {}
+	
+	/**
+	 * Saves a given seller into ArrayList of seller
+	 * @param seller Seller class object
+	 */
+	public void setSeller(Seller seller) {
+		sellers.add(seller);
+	}
+	
+	/**
+	 * Saves a given buyer into ArrayList of buyer
+	 * @param buyer Buyer class object
+	 */
+	public void setBuyer(Buyer buyer) {
+		buyers.add(buyer);
+	}
+	
+	/**
+	 * Returns the seller object which match with a given seller's initial ID 
+	 * @param sellerInitialID Integer of seller's initial ID
+	 * @return Seller object
+	 */
+	public Seller getSeller(int sellerInitialID) {
+		Seller result = null;
+		for (Seller seller : sellers) {
+			int initialID = seller.getInitialID();
+			if (initialID == sellerInitialID) {
+				result = seller;
+			}
+		}
+		return result;
+	}	
+	
+	/**
+	 * Returns the buyer object which match with a given buyer's id
+	 * @param buyerID String of buyer's ID
+	 * @return Buyer object
+	 */
+	public Buyer getBuyer(String buyerID) {
+		Buyer result = null;
+		for (Buyer buyer : buyers) {
+			String id = buyer.getAccount().getID();
+			if (id == buyerID) {
+				result = buyer;
+			}
+		}
+		return result;
+	}
 	
 	/**
 	 * Gives a unique random ID to a given seller and stores it, when the seller register
