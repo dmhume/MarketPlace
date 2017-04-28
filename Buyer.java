@@ -9,7 +9,7 @@ public class Buyer {
 	/**
 	 * Constructor
 	 */
-	public Buyer(int id, String pw, String email, String name) {
+	public Buyer(String id, String pw, String email, String name) {
 		account = new Account(id, pw, email, name);
 	}
 	

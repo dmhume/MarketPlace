@@ -6,7 +6,7 @@ public class Account {
 	/**
 	 * Instance fields (Needs to be saved)
 	 */
-	public int ID;
+	public String ID;
 	private String password;
 	private String emailAddress;
 	private String name;
@@ -15,7 +15,7 @@ public class Account {
 	/**
 	 * Constructor
 	 */
-	public Account(int id, String pw, String email, String nm) {
+	public Account(String id, String pw, String email, String nm) {
 		ID = id;
 		password = pw;
 		emailAddress = email;
@@ -27,7 +27,7 @@ public class Account {
 	 * Returns ID
 	 * @return Integer ID number 
 	 */
-	public int getID() {
+	public String getID() {
 		return ID;
 	}
 	
@@ -51,7 +51,7 @@ public class Account {
 	 * Replaces ID with given new ID
 	 * @param id Integer new ID
 	 */
-	public void setID(int newID) {
+	public void setID(String newID) {
 		ID = newID;
 	}
 	
@@ -104,7 +104,7 @@ public class Account {
 	// test
 	public static void main(String[] args) {
 		
-		Account test = new Account(111, "abc", "abc@ac.com", "Ryan");
+		Account test = new Account("idtest", "abc", "abc@ac.com", "Ryan");
 		test.getAccountInformation();
 		
 	}

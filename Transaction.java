@@ -13,29 +13,29 @@ import java.io.File;
 public class Transaction {
 
 	// Instance variables
-	private int buyerID;
-	private int sellerID;
+	private String buyerID;
+	private int sellerInitialID;
 	private int itemSold;
 	private String transactionTime;
 	private File transactions;
 	
 	
 	// Default Constructor
-	public Transaction(int itemNumber, int sellerid, int buyerid, String time) {
+	public Transaction(int itemNumber, int sellerid, String buyerid, String time) {
 		buyerID = buyerid;
-		sellerID = sellerid;
+		sellerInitialID = sellerid;
 		itemSold = itemNumber;
 		transactionTime = time;
 	}
 	
 	
 	// Setter Methods
-	public void setBuyer(int user) { 
+	public void setBuyer(String user) { 
 		buyerID = user;
 	}
 	
 	public void setSeller(int user) {
-		sellerID = user;
+		sellerInitialID = user;
 	}
 	
 	public void setItem(int item) {
@@ -44,12 +44,12 @@ public class Transaction {
 	
 	
 	// Getter Methods
-	public int getBuyer() {
+	public String getBuyer() {
 		return buyerID;
 	}
 	
 	public int getSeller() {
-		return sellerID;
+		return sellerInitialID;
 	}
 	
 	public int getItem() {

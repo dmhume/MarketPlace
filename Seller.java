@@ -23,7 +23,7 @@ public class Seller {
 	 * @throws IOException 
 	 * @throws ClassNotFoundException 
 	 */
-	public Seller(int initial, int id, String pw, String email, String name) throws ClassNotFoundException, IOException {
+	public Seller(int initial, String id, String pw, String email, String name) throws ClassNotFoundException, IOException {
 		account = new Account(id, pw, email, name);
 		// Creates the text file that contains inventory items
 		String filename = "sellerfile.txt";

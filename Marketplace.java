@@ -14,7 +14,7 @@ public class Marketplace {
 	 * Instance fields
 	 */
 	private ArrayList<String> buyerIDs;
-	private ArrayList<Integer> sellerInitialIDs;
+	private ArrayList<String[]> sellerIDs;
 	private ArrayList<Transaction> transactions;
 	private File savedFileBuyerIDs;
 	private File savedFileSellerIDs;
@@ -41,12 +41,13 @@ public class Marketplace {
 		String sellerIDFile = "sellerIDs.txt";
 		PrintWriter outputSellerID = new PrintWriter(sellerIDFile);
 		outputSellerID.close();
-		sellerInitialIDs = new ArrayList<Integer>();
+		sellerIDs = new ArrayList<String[]>();
 		savedFileSellerIDs = new File(sellerIDFile);
 		Scanner fileSellerIDs = new Scanner(savedFileSellerIDs);
-		while (fileSellerIDs.hasNext()) {
-			String id  = fileSellerIDs.next();
-			sellerInitialIDs.add(Integer.parseInt(id));
+		while (fileSellerIDs.hasNextLine()) {
+			String idLine  = fileSellerIDs.nextLine();
+			String[] ids = idLine.split(",");
+			sellerIDs.add(ids);
 		}
 		// Transaction
 		String transactionFile = "transactions.txt";
@@ -81,7 +82,8 @@ public class Marketplace {
 	 * @param seller class Seller object
 	 */
 	public void setSellerInitialID(Seller seller) {
-		sellerInitialIDs.add(seller.getInitialID());
+		String[] ids = {Integer.toString(seller.getInitialID()), seller.getAccount().getID()};
+		sellerIDs.add(ids);
 	}
 	
 	/**
@@ -90,7 +92,7 @@ public class Marketplace {
 	 * @return Integer value of the length of sellerInitialIDs + 1
 	 */
 	public int createInitailID() {
-		return sellerInitialIDs.size() + 1;
+		return sellerIDs.size() + 1;
 	}
 	
 	/**
@@ -139,7 +141,7 @@ public class Marketplace {
 		String time = df.format(dateobj);	
 		int itemNumber = item.getItemNumber();
 		int sellerID = seller.getInitialID();
-		int buyerID = buyer.getAccount().getID();
+		String buyerID = buyer.getAccount().getID();
 		Transaction action = new Transaction(itemNumber, sellerID, buyerID, time);
 		transactions.add(action);
 	}
@@ -162,10 +164,10 @@ public class Marketplace {
 	 */
 	public String getListOfSellerID() {
 		String result = "";
-		for (int id : sellerInitialIDs) {
-			result += Integer.toString(id) + ", ";
+		for (String[] id : sellerIDs) {
+			result += "Seller Initial ID: " + id[0] + ", Seller ID: " + id[1];
 		}
-		return result.substring(0,  result.length()-1);
+		return result;
 	}
 	
 	public String reportInventoryOfSeller(Seller seller) {
