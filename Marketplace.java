@@ -113,6 +113,10 @@ public class Marketplace {
 			String email = contents[2];
 			String name = contents[3];
 			Buyer buyer = new Buyer(id, pw, email, name);
+			String[] history = contents[4].split("/");
+			for (String purchasedItem : history) {
+				buyer.getAccount().addHistory(purchasedItem);
+			}
 			buyers.add(buyer);
 		}
 		fileBuyers.close();
@@ -144,6 +148,7 @@ public class Marketplace {
 		this.setTransaction(item, seller, buyer);
 		String[] shippingResult = {item.getName(), Integer.toString(item.getItemNumber()), "shipped"};
 		shippingStatus.add(shippingResult);
+		buyer.getAccount().addHistory(item.getName());
 		seller.removeItem(item);
 	}
 	
@@ -193,6 +198,22 @@ public class Marketplace {
 			}
 		}
 		return result;
+	}
+	
+	/**
+	 * Returns the list of Buyer object
+	 * @return ArrayList of Buyer object
+	 */
+	public ArrayList<Buyer> getListOfBuyer() {
+		return buyers;
+	}
+	
+	/**
+	 * Returns the list of Seller object
+	 * @return ArrayList of Seller object
+	 */
+	public ArrayList<Seller> getListofSeller() {
+		return sellers;
 	}
 	
 	/**
@@ -505,9 +526,60 @@ public class Marketplace {
 			System.out.println("File not found");
 		}
 		//ArrayList<Transaction> transactions;
+		try {
+			PrintWriter outTransactions = new PrintWriter("transactions.txt");
+			for (Transaction transaction : transactions) {
+				String itemNum = Integer.toString(transaction.getItem());
+				String sellerInitialID = Integer.toString(transaction.getSeller());
+				String buyerID = transaction.getBuyer();
+				String time = transaction.getTime();
+				outTransactions.println(itemNum + "," + sellerInitialID + "," + buyerID + "," + time);
+			}
+			outTransactions.close();
+		}
+		catch(FileNotFoundException e) {
+			System.out.println("File not found");
+		}
 		//ArrayList<Seller> sellers;
+		try {
+			PrintWriter outSellers = new PrintWriter("sellers.txt");
+			for (Seller seller : sellers) {
+				String initialID = Integer.toString(seller.getInitialID());
+				String id = seller.getAccount().getID();
+				String pw = seller.getAccount().getPassword();
+				String email = seller.getAccount().getEmail();
+				String name = seller.getAccount().getName();
+				outSellers.println(initialID + "," + id + "," + pw + "," + email +"," + name);
+			}
+			outSellers.close();
+		}
+		catch(FileNotFoundException e) {
+			System.out.println("File not found");
+		}
 		//ArrayList<Buyer> buyers;
+		try {
+			PrintWriter outBuyers = new PrintWriter("buyers.txt");
+			for (Buyer buyer : buyers) {
+				String id = buyer.getAccount().getID();
+				String pw = buyer.getAccount().getPassword();
+				String email = buyer.getAccount().getEmail();
+				String name = buyer.getAccount().getName();
+				String history = buyer.getAccount().getHistory();
+				outBuyers.println(id + "," + pw + "," + email + "," + name + "," + history);
+			}
+			outBuyers.close();
+		}
+		catch(FileNotFoundException e) {
+			System.out.println("File not found");
+		}
 		//ArrayList<String[]> shippingStatus;
+		try {
+			PrintWriter outShipping = new PrintWriter("shippingStatus.txt");
+			
+		}
+		catch(FileNotFoundException e) {
+			System.out.println("File not found");
+		}
 	} 
 	
 	/**
