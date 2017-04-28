@@ -74,13 +74,6 @@ public class Marketplace {
 	}
 	
 	/**
-	 * Returns search results based on a search keyword, which could be item name, categories, 
-	 * item number, etc
-	 * @return String search results based on the keyword
-	 */
-	public String search(String keyword) {}
-	
-	/**
 	 * Buyer object purchases item, which makes Seller object sends item to Buyer object 
 	 * and the item is removed from inventory
 	 * @param item Item class object
@@ -109,7 +102,9 @@ public class Marketplace {
 	 * Stores a given buyer id in ArrayList.
 	 * @param buyer String buyer ID
 	 */
-	public void setBuyerID(String id) {}
+	public void setBuyerID(Buyer buyer) {
+		buyerIDs.add(buyer.getAccount().getID());
+	}
 	
 	/**
 	 * Returns the message to the specific seller that a given item is out of stock 
