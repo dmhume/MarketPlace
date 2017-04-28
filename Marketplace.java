@@ -113,14 +113,18 @@ public class Marketplace {
 	 * @param buyer class Buyer object
 	 * @return String buyer ID
 	 */
-	public String getBuyerID(Buyer buyer) {}
+	public String getBuyerID(Buyer buyer) {
+		return buyer.getAccount().getID();
+	}
 	
 	/**
 	 * Returns the seller ID which matches with a given seller 
 	 * @param seller class Seller object
 	 * @return String seller ID
 	 */
-	public String getSellerID(Seller seller) {}
+	public String getSellerID(Seller seller) {
+		return seller.getAccount().getID();
+	}
 	
 	/**
 	 * Returns the transaction history for a given object such as a seller, a buyer or a item
@@ -170,6 +174,11 @@ public class Marketplace {
 		return result;
 	}
 	
+	/**
+	 * Returns items in the inventory of a given seller
+	 * @param seller Seller object
+	 * @return String of items in the inventory of a given seller
+	 */
 	public String reportInventoryOfSeller(Seller seller) {
 		String result = "";
 		for (Item item : seller.getInventory()) {
@@ -178,6 +187,11 @@ public class Marketplace {
 		return result;
 	}
 	
+	/**
+	 * Returns purchased items of a given buyer
+	 * @param buyer Buyer class object
+	 * @return String of purchased items of a given buyer
+	 */
 	public String reportBuyerPurchsedHistory(Buyer buyer) {
 		String result = "Purchased Items of "+ buyer.getAccount().getID() + ": " + buyer.getAccount().getHistory();
 		return result;
