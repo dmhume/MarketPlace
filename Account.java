@@ -94,7 +94,7 @@ public class Account {
 	public String getHistory() {
 		String result = "";
 		for(Item item : history) {
-			result += item.getName() + ", ";
+			result += item.getName() + "/";
 		}
 		return result.substring(0,  result.length()-1);
 	}
@@ -111,7 +111,7 @@ public class Account {
 	 * Prints all of account information as String
 	 */
 	public void getAccountInformation() {
-		System.out.printf("%-15s%20d\n", "ID: ", ID);
+		System.out.printf("%-15s%20s\n", "ID: ", ID);
 		System.out.printf("%-15s%20s\n", "Password: ", password);
 		System.out.printf("%-15s%20s\n", "Email Address: ", emailAddress);
 		System.out.printf("%-15s%20s\n", "Name: ", name);
