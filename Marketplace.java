@@ -42,8 +42,8 @@ public class Marketplace {
 		buyerIDs = new ArrayList<String>();
 		savedFileBuyerIDs = new File(buyerIDFile);
 		Scanner fileBuyerIDs = new Scanner(savedFileBuyerIDs);
-		while (fileBuyerIDs.hasNext()) {
-			String id = fileBuyerIDs.next();
+		while (fileBuyerIDs.hasNextLine()) {
+			String id = fileBuyerIDs.nextLine();
 			buyerIDs.add(id);
 		}
 		fileBuyerIDs.close();
@@ -393,10 +393,10 @@ public class Marketplace {
 	}
 	
 	/**
-	 * Returns the list of buyer as ID
+	 * Returns string of the list of buyer as ID
 	 * @return String of the list of buyer
 	 */
-	public String getListOfBuyerID() {
+	public String seeListOfBuyerID() {
 		String result = "";
 		for (String id : buyerIDs) {
 			result += id + ", ";
@@ -405,15 +405,31 @@ public class Marketplace {
 	}
 	
 	/**
-	 * Returns the list of seller as ID
+	 * Returns string of the list of seller as ID
 	 * @return String of the list of seller
 	 */
-	public String getListOfSellerID() {
+	public String seeListOfSellerID() {
 		String result = "";
 		for (String[] id : sellerIDs) {
 			result += "Seller Initial ID: " + id[0] + ", Seller ID: " + id[1] + "\n";
 		}
 		return result;
+	}
+	
+	/**
+	 * Returns ArrayList<String> of buyer ID
+	 * @return ArrayList<String> 
+	 */
+	public ArrayList<String> getListOfBuyerID() {
+		return buyerIDs;
+	}
+	
+	/**
+	 * Returns ArrayList<String[]> of seller ID
+	 * @return ArrayList<String[]> of seller ID
+	 */
+	public ArrayList<String[]> getListofSellerID() {
+		return sellerIDs;
 	}
 	
 	/**
@@ -464,7 +480,35 @@ public class Marketplace {
 	/**
 	 * Updates all of information needed and saves it as a text file
 	 */
-	public void updateFile() {} 
+	public void updateFile() {
+		//ArrayList<String> buyerIDs;
+		try {
+			PrintWriter outBuyerIDs = new PrintWriter("buyerIDs.txt");
+			for (String id : buyerIDs) {
+				outBuyerIDs.println(id);
+			}
+			outBuyerIDs.close();
+		}
+		catch(FileNotFoundException e) {
+			System.out.println("File not found");
+		}
+		//ArrayList<String[]> sellerIDs;
+		try {
+			PrintWriter outSellerIDs = new PrintWriter("sellerIDs.txt");
+			for (String[] ids : sellerIDs) {
+				outSellerIDs.print(ids[0] + ",");
+				outSellerIDs.println(ids[1]);
+			}
+			outSellerIDs.close();
+		}
+		catch(FileNotFoundException e) {
+			System.out.println("File not found");
+		}
+		//ArrayList<Transaction> transactions;
+		//ArrayList<Seller> sellers;
+		//ArrayList<Buyer> buyers;
+		//ArrayList<String[]> shippingStatus;
+	} 
 	
 	/**
 	 * main
