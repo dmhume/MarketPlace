@@ -397,7 +397,7 @@ public class Menu {
 								Seller newSeller = new Seller(newID, usernameInput, passwordInput, emailInput, nameInput);
 
 								instance.getMarket().setSeller(newSeller);
-								instance.getMarket().setSellerInitialID(newSeller);
+								instance.getMarket().setSellerID(newSeller);
 								
 								accountChoice = 3;
 								
