@@ -79,6 +79,11 @@ public class Item implements Serializable{
 	public String getCategory(){
 		return category;
 	}
+	
+	//method to return category number
+	public int getCategoryNumber(){
+		return cNumber;
+	}
 	//method to return the itemNumber
 	public int getItemNumber(){
 		return itemNumber;
