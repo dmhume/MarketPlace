@@ -57,6 +57,7 @@ public class Item implements Serializable{
 		case 9: category = "miscellaneous";
 		break;
 		}
+		itemNumber = 1;
 		setItemNumber();
 		this.description = d;
 		this.sellerID = s;
@@ -148,17 +149,16 @@ public class Item implements Serializable{
 	}
 	
 	
-	/*testing class
+	//testing class
 	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException{
-		Item testItem = new Item("Test item", 9, "This is a test item", 0, 0, 0);
-		Item test2 = new Item("Shirt", 2, "Blue shirt", 123, 1, 13);
-		ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("totalInventory.txt"));
-		out.writeObject(testItem);
-		out.close();
-		
-		ObjectInputStream in = new ObjectInputStream(new FileInputStream("totalInventory.txt"));
-		Item test = (Item) in.readObject();
-		System.out.println(testItem.getName());
-		System.out.println(testItem.getItemNumber());
-	}*/
+		Item testItem = new Item("test item", 9, "test item", 0, 0, 0);
+  		ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("totalInventory.txt"));
+  		out.writeObject(testItem);
+ 		out.close();
+  		
+  		ObjectInputStream in = new ObjectInputStream(new FileInputStream("totalInventory.txt"));
+  		Item test = (Item) in.readObject();
+  		System.out.println(testItem.getName());
+ 		System.out.println(testItem.getItemNumber());
+	}
 }
