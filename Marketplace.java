@@ -636,7 +636,7 @@ public class Marketplace implements Serializable {
 		test.setBuyer(testBuyer);
 		test.purchasedItem(testItem, 5, testBuyer);
 		//test.createItem(testSeller);
-		test.getTransaction(1);
+		System.out.println(test.getTransaction(1));
 		test.updateFile();
 	}
 
