@@ -115,7 +115,7 @@ public class Seller {
 	public String inventoryToString() {
 		String result = "";
 		for (Item item : inventory) {
-			result += item.getName() + "/" + Integer.toString(item.getItemNumber()) + "/" + item.getDescription() + "/" + Integer.toString(item.getSellerID()) + "/" + Integer.toString(item.getQuantity()) + "/" + Double.toString(item.getPrice()) + "_";
+			result += item.getName() + "/" + Integer.toString(item.getCategoryNumber()) + "/" +Integer.toString(item.getItemNumber()) + "/" + item.getDescription() + "/" + Integer.toString(item.getSellerID()) + "/" + Integer.toString(item.getQuantity()) + "/" + Double.toString(item.getPrice()) + "_";
 		}
         return result;
 	}

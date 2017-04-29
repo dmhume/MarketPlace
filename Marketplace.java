@@ -106,12 +106,13 @@ public class Marketplace implements Serializable {
 			for (String list : listOfItem) {
 				String[] itemInfo = list.split("/");
 				String itemName = itemInfo[0];
-				int itemNum = Integer.parseInt(itemInfo[1]);
-				String desc = itemInfo[2];
-				int sellerInitialID = Integer.parseInt(itemInfo[3]);
-				int quantity = Integer.parseInt(itemInfo[4]);
-				Double price = Double.parseDouble(itemInfo[5]);
-				Item item = new Item(itemName, desc, sellerInitialID, quantity, price);
+				int categoryNum = Integer.parseInt(itemInfo[1]);
+				int itemNum = Integer.parseInt(itemInfo[2]);
+				String desc = itemInfo[3];
+				int sellerInitialID = Integer.parseInt(itemInfo[4]);
+				int quantity = Integer.parseInt(itemInfo[5]);
+				Double price = Double.parseDouble(itemInfo[6]);
+				Item item = new Item(itemName, categoryNum, desc, sellerInitialID, quantity, price);
 			    seller.addToInventory(item);
 			}
 			sellers.add(seller);
@@ -507,6 +508,10 @@ public class Marketplace implements Serializable {
 		Scanner name = new Scanner(System.in);
 		System.out.print("Item Name: ");
 		String ItemName = name.nextLine();
+		Scanner cateNum = new Scanner(System.in);
+		System.out.println("Choose category number (1: books, 2: clothing, 3: electronics, 4: healthFood, 5: homeGarden, 6: media, 7: outdoor, 8: toy, 9: miscellaneous");
+		System.out.print("Enter Number: ");
+		int categoryNum = cateNum.nextInt();
 		Scanner desc = new Scanner(System.in);
 		System.out.print("Item Description: ");
 		String ItemDesc = desc.nextLine();
@@ -517,7 +522,7 @@ public class Marketplace implements Serializable {
 		Scanner price = new Scanner(System.in);
 		System.out.print("Item price: ");
 		Double ItemPrice = price.nextDouble();
-		Item item = new Item(ItemName, ItemDesc, sellerInitialID, ItemQuantity, ItemPrice);
+		Item item = new Item(ItemName, categoryNum, ItemDesc, sellerInitialID, ItemQuantity, ItemPrice);
 		return item;
 	}
 	
@@ -622,13 +627,14 @@ public class Marketplace implements Serializable {
 	public static void main(String[] args) throws ClassNotFoundException, IOException {
 		Seller testSeller = new Seller(1, "id", "pass", "abc@ac.com", "Tom");
 		Buyer testBuyer = new Buyer("buyerid", "pass", "bbb@in.com", "Gorr");
-		Item testItem = new Item("cup", "class cup", 1, 20, 2.99);
+		Item testItem = new Item("cup", 9, "class cup", 1, 20, 2.99);
 		Marketplace test = new Marketplace();
 		test.setSellerID(testSeller);
 		test.setBuyerID(testBuyer);
 		test.setSeller(testSeller);
 		test.setBuyer(testBuyer);
 		test.purchasedItem(testItem, 5, testBuyer);
+		test.createItem(testSeller);
 		test.updateFile();
 	}
 
