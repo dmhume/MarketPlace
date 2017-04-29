@@ -509,7 +509,7 @@ public class Marketplace implements Serializable {
 		System.out.print("Item Name: ");
 		String ItemName = name.nextLine();
 		Scanner cateNum = new Scanner(System.in);
-		System.out.println("Choose category number (1: books, 2: clothing, 3: electronics, 4: healthFood, 5: homeGarden, 6: media, 7: outdoor, 8: toy, 9: miscellaneous");
+		System.out.println("Choose category number (1: books, 2: clothing, 3: electronics, 4: healthFood, 5: homeGarden, 6: media, 7: outdoor, 8: toy, 9: miscellaneous)");
 		System.out.print("Enter Number: ");
 		int categoryNum = cateNum.nextInt();
 		Scanner desc = new Scanner(System.in);
@@ -523,6 +523,7 @@ public class Marketplace implements Serializable {
 		System.out.print("Item price: ");
 		Double ItemPrice = price.nextDouble();
 		Item item = new Item(ItemName, categoryNum, ItemDesc, sellerInitialID, ItemQuantity, ItemPrice);
+		seller.addToInventory(item);
 		return item;
 	}
 	
@@ -627,14 +628,15 @@ public class Marketplace implements Serializable {
 	public static void main(String[] args) throws ClassNotFoundException, IOException {
 		Seller testSeller = new Seller(1, "id", "pass", "abc@ac.com", "Tom");
 		Buyer testBuyer = new Buyer("buyerid", "pass", "bbb@in.com", "Gorr");
-		Item testItem = new Item("cup", 9, "class cup", 1, 20, 2.99);
+		Item testItem = new Item("cup", 9, "glass cup", 1, 20, 2.99);
 		Marketplace test = new Marketplace();
 		test.setSellerID(testSeller);
 		test.setBuyerID(testBuyer);
 		test.setSeller(testSeller);
 		test.setBuyer(testBuyer);
 		test.purchasedItem(testItem, 5, testBuyer);
-		test.createItem(testSeller);
+		//test.createItem(testSeller);
+		test.getTransaction(1);
 		test.updateFile();
 	}
 
