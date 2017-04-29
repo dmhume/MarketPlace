@@ -11,10 +11,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-public class Marketplace {
+public class Marketplace implements Serializable {
 	
 	/**
 	 * Instance fields
@@ -46,102 +47,111 @@ public class Marketplace {
 		outputBuyerID.close();
 		buyerIDs = new ArrayList<String>();
 		savedFileBuyerIDs = new File(buyerIDFile);
-		ObjectInputStream inBuyerIDs = new ObjectInputStream(new FileInputStream("buyerIDs.txt"));
-		try{
-			String id = null;
-			while((id = (String) inBuyerIDs.readObject()) != null){
-				buyerIDs.add(id);
-			}
-			inBuyerIDs.close();
+		Scanner fileBuyerIDs = new Scanner(savedFileBuyerIDs);
+		while (fileBuyerIDs.hasNextLine()) {
+			String id = fileBuyerIDs.nextLine();
+			buyerIDs.add(id);
 		}
-		catch(EOFException e){
-			inBuyerIDs.close();
-		}
+		fileBuyerIDs.close();
 		// SellerIDs
 		String sellerIDFile = "sellerIDs.txt";
 		PrintWriter outputSellerID = new PrintWriter(sellerIDFile);
 		outputSellerID.close();
 		sellerIDs = new ArrayList<String[]>();
 		savedFileSellerIDs = new File(sellerIDFile);
-		ObjectInputStream inSellerIDs = new ObjectInputStream(new FileInputStream("sellerIDs.txt"));
-		try{
-			String[] id = null;
-			while((id = (String[]) inSellerIDs.readObject()) != null){
-				sellerIDs.add(id);
-			}
-			inSellerIDs.close();
+		Scanner fileSellerIDs = new Scanner(savedFileSellerIDs);
+		while (fileSellerIDs.hasNextLine()) {
+			String idLine  = fileSellerIDs.nextLine();
+			String[] ids = idLine.split(",");
+			sellerIDs.add(ids);
 		}
-		catch(EOFException e){
-			inSellerIDs.close();
-		}
+		fileSellerIDs.close();
 		// Transaction
 		String transactionFile = "transactions.txt";
 		PrintWriter outputTransaction = new PrintWriter(transactionFile);
 		outputTransaction.close();
 		transactions = new ArrayList<Transaction>();
 		savedFileTransactions = new File(transactionFile);
-		ObjectInputStream inTransaction = new ObjectInputStream(new FileInputStream("transactions.txt"));
-		try{
-			Transaction transaction = null;
-			while((transaction = (Transaction) inTransaction.readObject()) != null){
-				transactions.add(transaction);
-			}
-			inTransaction.close();
+		Scanner fileTransactions = new Scanner(savedFileTransactions);
+		while (fileTransactions.hasNextLine()) {
+			String line = fileTransactions.nextLine();
+			String[] contents = line.split(",");
+			int itemNum = Integer.parseInt(contents[0]);
+			int sellerInitialID = Integer.parseInt(contents[1]);
+			String buyerID = contents[2];
+			String time = contents[3];
+			Transaction transaction = new Transaction(itemNum, sellerInitialID, buyerID, time);
+			transactions.add(transaction);
+			// Needs to save transaction history in ArrayList transactions
 		}
-		catch(EOFException e){
-			inTransaction.close();
-		}
+		fileTransactions.close();
 		//sellers
 		String sellerFile = "sellers.txt";
 		PrintWriter outputSellers = new PrintWriter(sellerFile);
 		outputSellers.close();
 		sellers = new ArrayList<Seller>();
 		savedFileSellers = new File(sellerFile);
-		ObjectInputStream inSeller = new ObjectInputStream(new FileInputStream("sellers.txt"));
-		try{
-			Seller seller = null;
-			while((seller = (Seller) inSeller.readObject()) != null){
-				sellers.add(seller);
+		Scanner fileSellers = new Scanner(savedFileSellers);
+		while (fileSellers.hasNextLine()) {
+			String line = fileSellers.nextLine();
+			String[] contents = line.split(",");
+			int initialID = Integer.parseInt(contents[0]);
+			String id = contents[1];
+			String pw = contents[2];
+			String email = contents[3];
+			String name = contents[4];
+			String itemList = contents[5];
+			String[] listOfItem = itemList.split("_");
+			Seller seller = new Seller(initialID, id, pw, email, name);
+			for (String list : listOfItem) {
+				String[] itemInfo = list.split("/");
+				String itemName = itemInfo[0];
+				int itemNum = Integer.parseInt(itemInfo[1]);
+				String desc = itemInfo[2];
+				int sellerInitialID = Integer.parseInt(itemInfo[3]);
+				int quantity = Integer.parseInt(itemInfo[4]);
+				Double price = Double.parseDouble(itemInfo[5]);
+				Item item = new Item(itemName, desc, sellerInitialID, quantity, price);
+			    seller.addToInventory(item);
 			}
-			inSeller.close();
+			sellers.add(seller);
 		}
-		catch(EOFException e){
-			inSeller.close();
-		}
+		fileSellers.close();
 		// buyers
 		String buyerFile = "buyers.txt";
 		PrintWriter outputBuyers = new PrintWriter(buyerFile);
 		outputBuyers.close();
 		buyers = new ArrayList<Buyer>();
 		savedFileBuyers = new File(buyerFile);
-		ObjectInputStream inBuyer = new ObjectInputStream(new FileInputStream("buyers.txt"));
-		try{
-			Buyer buyer = null;
-			while((buyer = (Buyer) inBuyer.readObject()) != null){
-				buyers.add(buyer);
+		Scanner fileBuyers = new Scanner(savedFileBuyers);
+		while (fileBuyers.hasNextLine()) {
+			String line = fileBuyers.nextLine();
+			String [] contents = line.split(",");
+			String id = contents[0];
+			String pw = contents[1];
+			String email = contents[2];
+			String name = contents[3];
+			Buyer buyer = new Buyer(id, pw, email, name);
+			String[] history = contents[4].split("/");
+			for (String purchasedItem : history) {
+				buyer.getAccount().addHistory(purchasedItem);
 			}
-			inBuyer.close();
+			buyers.add(buyer);
 		}
-		catch(EOFException e){
-			inBuyer.close();
-		}
+		fileBuyers.close();
 		// shipping status
 		String shippingStatusFile = "shippingStatus.txt";
 		PrintWriter outputShipping = new PrintWriter(shippingStatusFile);
 		outputShipping.close();
 		shippingStatus = new ArrayList<String[]>();
 		savedFileShippingStatus = new File(shippingStatusFile);
-		ObjectInputStream inShipping = new ObjectInputStream(new FileInputStream("shippingStatus.txt"));
-		try{
-			String[] status = null;
-			while((status = (String[]) inShipping.readObject()) != null){
-				shippingStatus.add(status);
-			}
-			inShipping.close();
+		Scanner fileShipping = new Scanner(savedFileShippingStatus);
+		while (fileShipping.hasNextLine()) {
+			String line = fileShipping.nextLine();
+			String[] contents = line.split(",");
+			shippingStatus.add(contents);
 		}
-		catch(EOFException e){
-			inShipping.close();
-		}		
+		fileShipping.close();
 	}
 	
 	/**
@@ -150,7 +160,7 @@ public class Marketplace {
 	 * @param item Item class object
 	 * @param buyer Buyer class Object
 	 */
-	public void purchasedItem(Item item, Buyer buyer){
+	public void purchasedItem(Item item, int num, Buyer buyer){
 		int sellerInitialID = item.getSellerID();
 		Seller seller = this.getSeller(sellerInitialID);
 		System.out.println(seller.notifyBuyer(item) + " to " + buyer.getAccount().getID());
@@ -158,7 +168,7 @@ public class Marketplace {
 		String[] shippingResult = {item.getName(), Integer.toString(item.getItemNumber()), "shipped"};
 		shippingStatus.add(shippingResult);
 		buyer.getAccount().addHistory(item.getName());
-		seller.removeItem(item);
+		seller.subtractQuatity(item, num);
 	}
 	
 	/**
@@ -229,7 +239,7 @@ public class Marketplace {
 	 * Gives a unique random ID to a given seller and stores it, when the seller register
 	 * @param seller class Seller object
 	 */
-	public void setSellerInitialID(Seller seller) {
+	public void setSellerID(Seller seller) {
 		String[] ids = {Integer.toString(seller.getInitialID()), seller.getAccount().getID()};
 		sellerIDs.add(ids);
 	}
@@ -486,7 +496,7 @@ public class Marketplace {
 	}
 	
 	/**
-	 * Creates new Item object and returns Item object
+	 * Creates new Item object, saves it in inventory of a given seller, and returns Item object
 	 * @param seller Seller object 
 	 * @return Itme class object
 	 * @throws IOException 
@@ -507,7 +517,8 @@ public class Marketplace {
 		Scanner price = new Scanner(System.in);
 		System.out.print("Item price: ");
 		Double ItemPrice = price.nextDouble();
-		return new Item(ItemName, ItemDesc, sellerInitialID, ItemQuantity, ItemPrice);
+		Item item = new Item(ItemName, ItemDesc, sellerInitialID, ItemQuantity, ItemPrice);
+		return item;
 	}
 	
 	/**
@@ -515,31 +526,92 @@ public class Marketplace {
 	 * @throws IOException 
 	 * @throws FileNotFoundException 
 	 */
-	public void updateFile() throws FileNotFoundException, IOException {
+	public void updateFile() {
 		//ArrayList<String> buyerIDs;
-		ObjectOutputStream outBuyerIDs = new ObjectOutputStream(new FileOutputStream("buyerIDs.txt"));
-		outBuyerIDs.writeObject(buyerIDs);
-		outBuyerIDs.close();
+		try {
+			PrintWriter outBuyerIDs = new PrintWriter("buyerIDs.txt");
+			for (String id : buyerIDs) {
+				outBuyerIDs.println(id);
+			}
+			outBuyerIDs.close();
+		}
+		catch(FileNotFoundException e) {
+			System.out.println("File not found");
+		}
 		//ArrayList<String[]> sellerIDs;
-		ObjectOutputStream outSellerIDs = new ObjectOutputStream(new FileOutputStream("sellerIDs.txt"));
-		outSellerIDs.writeObject(sellerIDs);
-		outSellerIDs.close();
+		try {
+			PrintWriter outSellerIDs = new PrintWriter("sellerIDs.txt");
+			for (String[] ids : sellerIDs) {
+				outSellerIDs.print(ids[0] + ",");
+				outSellerIDs.println(ids[1]);
+			}
+			outSellerIDs.close();
+		}
+		catch(FileNotFoundException e) {
+			System.out.println("File not found");
+		}
 		//ArrayList<Transaction> transactions;
-		ObjectOutputStream outTransactions = new ObjectOutputStream(new FileOutputStream("transactions.txt"));
-		outTransactions.writeObject(transactions);
-		outTransactions.close();
+		try {
+			PrintWriter outTransactions = new PrintWriter("transactions.txt");
+			for (Transaction transaction : transactions) {
+				String itemNum = Integer.toString(transaction.getItem());
+				String sellerInitialID = Integer.toString(transaction.getSeller());
+				String buyerID = transaction.getBuyer();
+				String time = transaction.getTime();
+				outTransactions.println(itemNum + "," + sellerInitialID + "," + buyerID + "," + time);
+			}
+			outTransactions.close();
+		}
+		catch(FileNotFoundException e) {
+			System.out.println("File not found");
+		}
 		//ArrayList<Seller> sellers;
-		ObjectOutputStream outSellers = new ObjectOutputStream(new FileOutputStream("sellers.txt"));
-		outSellers.writeObject(sellers);
-		outSellers.close();
+		try {
+			PrintWriter outSellers = new PrintWriter("sellers.txt");
+			for (Seller seller : sellers) {
+				String initialID = Integer.toString(seller.getInitialID());
+				String id = seller.getAccount().getID();
+				String pw = seller.getAccount().getPassword();
+				String email = seller.getAccount().getEmail();
+				String name = seller.getAccount().getName();
+				String itemList = seller.inventoryToString();
+				outSellers.println(initialID + "," + id + "," + pw + "," + email +"," + name + "," + itemList);
+			}
+			outSellers.close();
+		}
+		catch(FileNotFoundException e) {
+			System.out.println("File not found");
+		}
 		//ArrayList<Buyer> buyers;
-		ObjectOutputStream outBuyers = new ObjectOutputStream(new FileOutputStream("buyers.txt"));
-		outBuyers.writeObject(buyers);
-		outBuyers.close();
+		try {
+			PrintWriter outBuyers = new PrintWriter("buyers.txt");
+			for (Buyer buyer : buyers) {
+				String id = buyer.getAccount().getID();
+				String pw = buyer.getAccount().getPassword();
+				String email = buyer.getAccount().getEmail();
+				String name = buyer.getAccount().getName();
+				String history = buyer.getAccount().getHistory();
+				outBuyers.println(id + "," + pw + "," + email + "," + name + "," + history);
+			}
+			outBuyers.close();
+		}
+		catch(FileNotFoundException e) {
+			System.out.println("File not found");
+		}
 		//ArrayList<String[]> shippingStatus;
-		ObjectOutputStream outShipping = new ObjectOutputStream(new FileOutputStream("buyers.txt"));
-		outShipping.writeObject(shippingStatus);
-		outShipping.close();
+		try {
+			PrintWriter outShipping = new PrintWriter("shippingStatus.txt");
+			for (String[] status : shippingStatus) {
+				String itemName = status[0];
+				String itemNum = status[1];
+				String shipped = status[2];
+				outShipping.println(itemName + "," + itemNum + "," + shipped);
+			}
+			outShipping.close();
+		}
+		catch(FileNotFoundException e) {
+			System.out.println("File not found");
+		}
 	} 
 	
 	/**
@@ -548,7 +620,16 @@ public class Marketplace {
 	 * @throws ClassNotFoundException 
 	 */
 	public static void main(String[] args) throws ClassNotFoundException, IOException {
+		Seller testSeller = new Seller(1, "id", "pass", "abc@ac.com", "Tom");
+		Buyer testBuyer = new Buyer("buyerid", "pass", "bbb@in.com", "Gorr");
+		Item testItem = new Item("cup", "class cup", 1, 20, 2.99);
 		Marketplace test = new Marketplace();
+		test.setSellerID(testSeller);
+		test.setBuyerID(testBuyer);
+		test.setSeller(testSeller);
+		test.setBuyer(testBuyer);
+		test.purchasedItem(testItem, 5, testBuyer);
+		test.updateFile();
 	}
 
 }

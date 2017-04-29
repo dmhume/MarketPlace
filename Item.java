@@ -115,6 +115,7 @@ public class Item implements Serializable{
 		price = p;
 	}
 	
+	
 	//testing class
 	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException{
 		Item testItem = new Item("Basketball", "Standard basketball", 11234, 4, 23.24);
@@ -132,6 +133,6 @@ public class Item implements Serializable{
 		ObjectInputStream in = new ObjectInputStream(new FileInputStream("totalInventory.txt"));
 		Item test = (Item) in.readObject();
 		System.out.println(test2.getName());
-		System.out.println(test4.getItemNumber());
+		System.out.println(test3.getItemNumber());
 	}
 }

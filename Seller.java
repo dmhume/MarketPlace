@@ -36,6 +36,11 @@ public class Seller {
 		inventory.remove(item);
 	}
 	
+	public void subtractQuatity(Item item, int num) {
+		int quantity = item.getQuantity() - num;
+		item.setQuantity(quantity);
+	}
+	
 	/**
 	 * Changes the information of item with given info. Based on the parameter 'num', parameter 'info'
 	 * needs to be changed to another type such as double for price 

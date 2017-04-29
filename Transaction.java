@@ -1,3 +1,4 @@
+import java.io.Serializable;
 
 //LAST UPDATED: 4/14/2017 2:34p.m.
 
@@ -9,7 +10,7 @@
 
 
 
-public class Transaction {
+public class Transaction implements Serializable {
 
 	// Instance variables
 	private String buyerID;
