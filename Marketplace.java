@@ -629,6 +629,7 @@ public class Marketplace implements Serializable {
 		Seller testSeller = new Seller(1, "id", "pass", "abc@ac.com", "Tom");
 		Buyer testBuyer = new Buyer("buyerid", "pass", "bbb@in.com", "Gorr");
 		Item testItem = new Item("cup", 9, "glass cup", 1, 20, 2.99);
+		System.out.println(testItem.getItemNumber());
 		Marketplace test = new Marketplace();
 		test.setSellerID(testSeller);
 		test.setBuyerID(testBuyer);
